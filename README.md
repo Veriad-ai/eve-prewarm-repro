@@ -3,7 +3,7 @@
 A fresh `eve init` app (eve 1.0.1) with three additions:
 
 - `agent/sandbox.ts`: a `just-bash` sandbox, so `eve build` prewarms a template without any cloud credentials.
-- `agent/lib/catalog.ts`: a shared module that imports a 4.7 MB JSON file, standing in for a large shared package.
+- `agent/lib/catalog.ts`: a shared module that imports a 4.3 MB JSON file, standing in for a large shared package.
 - `agent/tools/tool_000.ts` … `tool_099.ts`: 100 tools that each import `findApp` from that shared module.
 
 The catalog and tools are committed. `scripts/generate.ts` regenerates them; set `TOOL_COUNT` to change how many tools it writes.
@@ -16,6 +16,16 @@ rm -rf node_modules/.cache .eve .output
 time bun x eve build
 du -sh node_modules/.cache/eve
 ```
+
+To try the proposed fix, apply it to the installed eve and build again:
+
+```sh
+bun scripts/single-bundle.ts
+rm -rf node_modules/.cache .eve .output
+time bun x eve build
+```
+
+`rm -rf node_modules && bun install` restores stock eve.
 
 ## Results (Linux x64, 8 vCPU, Node 24, Bun 1.4.2)
 
